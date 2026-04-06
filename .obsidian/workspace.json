@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "65d9f9d29954eccb",
+    "type": "split",
+    "children": [
+      {
+        "id": "1ff64012cfe08c9f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b717ed117e83c56b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Rascunho.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Rascunho"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "75f2918eb83dca0c",
+    "type": "split",
+    "children": [
+      {
+        "id": "8f8a9aec5845d010",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3443fe39b7a43aa3",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de arquivos"
+            }
+          },
+          {
+            "id": "ce1011776a017de5",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "4df3ccc651ee0071",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "f0e9c72313641ef2",
+    "type": "split",
+    "children": [
+      {
+        "id": "e27453d314fc186b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "61bb36d546ac2899",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Cefet/Linguagem de programação/Lista 10.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos para Lista 10"
+            }
+          },
+          {
+            "id": "f1ae25f9f32863bd",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Cefet/Criando um alocador de Memoria/Inicio - 03-06-2025.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links de saída para Inicio - 03-06-2025"
+            }
+          },
+          {
+            "id": "e32cf8da8f6836ec",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "ba1c8b4fd1dc5b84",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Cefet/Criando um alocador de Memoria/Inicio - 03-06-2025.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Sumário de Inicio - 03-06-2025"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "bases:Criar nova base": false,
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "obsidian-importer:Open Importer": false,
+      "obsidian-excalidraw-plugin:New drawing": false
+    }
+  },
+  "active": "b717ed117e83c56b",
+  "lastOpenFiles": [
+    "Pasted image 20260405194724.png",
+    "Sem título.md",
+    "Cefet/Criptografia/Aula 7 - Criptografia RSA.md",
+    "Cefet/Criptografia/Aula 3 - Continuação.md",
+    "Excalidraw/Crpt - Ex 3.md",
+    "Cefet/Calculo com Funções de Várias Variaveis/Aula 1 - Introdução.md",
+    "Identidades trigonométricas.md",
+    "Cefet/Criptografia/Aula 4.md",
+    "Pasted image 20260318113513.png",
+    "Pasted image 20260318113512.png",
+    "Cefet/Criptografia/Aula 2 - Teoria dos números.md",
+    "Cefet/Criptografia/Aula 1 - Criptografia.md",
+    "Excalidraw/Crpt - Ex3.md",
+    "Excalidraw/Crpt - Ex2.md",
+    "Cefet/Linguagem de programação/Projeto – Funcionalidades da Linguagem PHP.md",
+    "Cefet/Linguagem de programação/Lista 15.md",
+    "Cefet/Linguagem de programação/Lista 14.md",
+    "Cefet/Linguagem de programação/Lista 7.md",
+    "Excalidraw/Aula 12 - Exercício 3.md",
+    "Excalidraw/Aula 12 - Exercício 4.md",
+    "Cefet/Linguagem de programação/Lista 13.md",
+    "Cefet/Linguagem de programação/Lista 9.md",
+    "Cefet/Linguagem de programação/Desenhos/Arvore 2.md",
+    "Excalidraw/Resposta b de Trabalho Realizado.md",
+    "2025-11-05.md",
+    "2025-06-03.md",
+    "Exercício 8 - Banco de dados - Álgebra Relacional.md",
+    "Diferencial de uma função f(x).md",
+    "Pasted image 20260311105416.png",
+    "Untitled Diagram 2.svg",
+    "Cefet/Sem título 1",
+    "Cefet/Psicologia",
+    "Untitled Diagram 1.svg",
+    "Cefet/Criptografia",
+    "Untitled Diagram.svg",
+    "Pasted image 20250519110107.png",
+    "Pasted Image 20250519110309_528.png",
+    "Pasted Image 20250519110012_573.png",
+    "Pasted Image 20250519105903_750.png",
+    "Cefet/Linguagem de programação/Desenhos",
+    "Cefet/Integrais e séries/Exemplos",
+    "Cefet/Integrais e séries/Primeira tentativa/Sem título",
+    "Cefet/Calculo com Funções de Várias Variaveis",
+    "Cefet/Integrais e séries/Primeira tentativa",
+    "Cefet/Linguagem de programação",
+    "Sem título.canvas",
+    "Cefet/Criando um alocador de Memoria",
+    "Untitled.canvas"
+  ]
+}
