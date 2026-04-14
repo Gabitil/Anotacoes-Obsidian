@@ -61,7 +61,7 @@ Note que $D(C(b))=$ resto da divisão de $(b^e)^d$ por $n$.
 
 $(b^e)^d= b^{ed}=b^{k\phi(n)+1}$
 
-**TEorema de Euler**
+**Teorema de Euler**
 
 Se $b$ é primo com $\phi(n)$
 

@@ -42,7 +42,7 @@ não é divisível por nenhum primo
 ### Divisão EUclidiana:
 
 **Teorema:** Sejam a e b dois número inteiros com $b \neq 0$. Então existem dois inteiros q e r tais que 
-$a=bq+r$ com $0\leq r\leq|b|$ 
+$a=bq+r$ com $0\leq r<|b|$ 
 
 q e r desta forma são únicos.
 
