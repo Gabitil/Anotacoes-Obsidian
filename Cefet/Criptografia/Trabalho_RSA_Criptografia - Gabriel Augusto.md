@@ -34,7 +34,7 @@ Um número primo é aquele que possui exatamente dois divisores positivos distin
   
 
 A aritmética modular é a base operacional do RSA. Dizemos que:
-  $$a≡b \pmod n$$
+  $$a\equiv b \mod n$$
  
 quando n divide $(a−b)$. Essa estrutura permite trabalhar com números dentro de um sistema cíclico, essencial para operações de criptografia.
 
@@ -59,7 +59,7 @@ Essa função é essencial para a construção da chave privada.
 
 O inverso modular de um número e módulo $φ(n)$ é um número $d$ tal que:
 
-  $e⋅d≡1 \pmod {φ(n)}$
+  $e⋅d\equiv 1 \mod {φ(n)}$
 
 Esse valor $d$ pode ser encontrado utilizando o algoritmo de Euclides estendido, sendo fundamental para a decifragem no RSA.
 
@@ -67,11 +67,11 @@ Esse valor $d$ pode ser encontrado utilizando o algoritmo de Euclides estendido,
   
 O funcionamento do RSA é garantido pelo **Teorema de Euler**, que afirma que, para qualquer inteiro a coprimo com n:
 
-  $a^{φ(n)}≡1 \pmod n$
+  $a^{φ(n)}\equiv1\mod n$
 
 Esse resultado assegura que a operação de criptografia e descriptografia são inversas entre si.
 
-O Teorema de Euler é uma generalização do **Pequeno Teorema de Fermat**, que afirma que, se $p$ é primo e $a$ não é múltiplo de $p$, então $a^{p−1}≡1 \pmod p$. Esse resultado é fundamental para a construção de sistemas criptográficos baseados em congruências modulares.
+O Teorema de Euler é uma generalização do **Pequeno Teorema de Fermat**, que afirma que, se $p$ é primo e $a$ não é múltiplo de $p$, então $a^{p−1}\equiv1 \mod p$. Esse resultado é fundamental para a construção de sistemas criptográficos baseados em congruências modulares.
 
 ### Aplicação no RSA
 
@@ -82,13 +82,79 @@ A partir desses conceitos, o RSA define:
 
 A cifragem de uma mensagem $M$ é dada por:
 
-$$C = M^e \mod n$$
+$$C=M^e \mod n$$
 
 e a decifragem por:
 
-$$M=C^{d} \mod  n$$
+$$M=C^d \mod n$$
 
 A validade dessas operações decorre diretamente das propriedades da aritmética modular e do Teorema de Euler.
+
+Exemplo de código:
+
+```python
+# =========================
+# Parâmetros RSA (didáticos)
+# =========================
+p = 61
+q = 53
+n = p * q # 3233
+phi = (p - 1)*(q - 1)
+  
+e = 17
+
+# Inverso modular (já calculado)
+
+d = 2753
+
+# =========================
+# Funções RSA
+# =========================
+
+def criptografar_bytes(texto, e, n):
+	dados = texto.encode("utf-8")
+	cifrado = [] 
+	
+	for byte in dados:
+		c = pow(byte, e, n)
+		cifrado.append(c)
+		
+	return cifrado
+
+
+def descriptografar_bytes(cifrado, d, n):
+	bytes_recuperados = []
+
+	for c in cifrado:
+		m = pow(c, d, n)
+		bytes_recuperados.append(m)
+	
+	return bytes(bytes_recuperados).decode("utf-8")
+
+  
+
+# # =========================
+# # Teste com UTF-8
+# # =========================
+mensagem = "Olá mundo!"
+
+cifrado = criptografar_bytes(mensagem, e, n)
+decifrado = descriptografar_bytes(cifrado, d, n)
+
+print("Mensagem:", mensagem)
+print("Cifrado:", cifrado)
+print("Decifrado:", decifrado)
+```
+Saída:
+
+```
+Mensagem: Olá mundo!
+Cifrado: [1307, 745, 205, 2017, 1992, 2271, 2160, 2235, 1773, 2185, 1853]
+Decifrado: Olá mundo!
+```
+
+Foi usado UTF-8, para a representação de todos os caracteres do alfabeto e seus acentos, realizando a cifragem em nível de byte, que garante que cada valor numérico seja menor que o módulo $n$, evitando a perda de informação
+
 ## **3.2 Assinaturas Digitais com RSA**
 
 O RSA também é amplamente utilizado em esquemas de assinatura digital, garantindo autenticidade e integridade das mensagens. Diferentemente da cifragem, o processo de assinatura utiliza a chave privada do emissor.
@@ -163,21 +229,15 @@ O ataque mais direto ao RSA é tentar fatorar n encontrando p e q. Para n pequen
 ```python
 import math
 
-  
-
 def fatoracao_forca_bruta(n):
 
 """Tenta encontrar p e q fatorando n por força bruta."""
 
-for p in range(2, int(math.isqrt(n)) + 1):
-
-if n % p == 0:
-
-q = n // p
-
-print(f'n = {n} fatorado: p = {p}, q = {q}')
-
-return p, q
+	for p in range(2, int(math.isqrt(n)) + 1):
+		if n % p == 0:
+			q = n // p
+			print(f'n = {n} fatorado: p = {p}, q = {q}')
+	return p, q
 
 return None
 ```
@@ -200,82 +260,65 @@ d = pow(e, -1, phi_n) # Chave privada recuperada
 print(f'Chave privada recuperada: d = {d}')
 ```
 
-  
+Saída:
 
-# Cifragem e decifragem de demonstração
-
-```python
-M = 65 # Mensagem original
-
-C = pow(M, e, n) # Cifra
-
-M_recuperado = pow(C, d, n) # Decifra com chave recuperada
-
-print(f'Mensagem: {M} | Cifrado: {C} | Recuperado: {M_recuperado}')
 ```
-  
-  
-
-Resultado esperado: n = 3233 fatorado com p = 53, q = 61, chave privada d = 2753, mensagem recuperada com sucesso.
-
-  
+n = 3233 fatorado: p = 53, q = 61
+Chave privada recuperada: d = 2753
+```
   
 
 ## **3.5.2 Fatoração de Fermat**
 
-O método de Fermat explora o fato de que n = p × q pode ser escrito como diferença de quadrados: n = a² − b², onde a = (p+q)/2 e b = (p−q)/2. Ele é muito eficiente quando p e q são próximos em valor — uma vulnerabilidade real quando primos são gerados de forma inadequada.
+O método de Fermat baseia-se na representação de um número inteiro nnn como diferença de quadrados:
 
-  
-  
+$n = a^2 - b^2 = (a - b)(a + b)$
+
+Para um número composto $n=p\cdot q$, com $p$ e $q$ primos ímpares, é possível escrever:
+
+$$
+a=\frac{p+q}{2}, b=\frac{p-q}{2}
+$$
+
+Dessa forma, a fatoração de $n$ pode ser obtida ao encontrar valores inteiros $a$ e $b$ tais que $a^2 - n = b^2$. O método é particularmente eficiente quando os fatores $p$ e $q$ são próximos, pois nesse caso o valor de $b$ é pequeno, reduzindo o número de iterações necessárias para encontrar a solução.
 
 **Código Python – Fatoração de Fermat:**
 
+```python
 import math
 
-  
-
 def fatoracao_fermat(n):
+    """
+    Fatoração de Fermat: eficiente quando p e q são próximos.
+    Explora n = a^2 - b^2 = (a+b)(a-b)
+    """
 
-"""
+    a = math.isqrt(n)
 
-Fatoração de Fermat: eficiente quando p e q são próximos.
+    if a * a < n:
+        a += 1  # Garante que a^2 >= n
 
-Explora n = a^2 - b^2 = (a+b)(a-b)
+    while True:
+        b2 = a * a - n
+        b = math.isqrt(b2)
 
-"""
+        if b * b == b2:  # b é quadrado perfeito
+            p = a - b
+            q = a + b
 
-a = math.isqrt(n)
+            print(f'Fermat: a={a}, b={b}')
+            print(f'Fatores encontrados: p={p}, q={q}')
 
-if a * a < n:
+            return p, q
 
-a += 1 # Garante que a^2 >= n
+        a += 1
 
-  
-
-while True:
-
-b2 = a * a - n
-
-b = math.isqrt(b2)
-
-if b * b == b2: # b é inteiro perfeito
-
-p = a - b
-
-q = a + b
-
-print(f'Fermat: a={a}, b={b}')
-
-print(f'Fatores encontrados: p={p}, q={q}')
-
-return p, q
-
-a += 1
-
+```
   
 
 # Exemplo: primos próximos (vulnerável ao método de Fermat)
 
+```python
 p = 9999991
 
 q = 9999973
@@ -284,314 +327,285 @@ n = p * q
 
 print(f'n = {n}')
 
-p_rec, q_rec = fatoracao_fermat(n)
+p_rec, q_rec = fatoracao_fermat(n_f)
 
-print(f'Fatoração correta: {p_rec == p and q_rec == q}')
+# Verificação (independente da ordem)
+if set([p_rec, q_rec]) == set([p_f, q_f]):
+	print("Resultado: fatoração correta ✅")
+else:
+	print("Resultado: fatoração incorreta ❌")
+```
+Saída:
 
+```
+n = 99999640000243
+Fermat: a=9999982, b=9
+Fatores encontrados: p=9999973, q=9999991
+Resultado: fatoração correta ✅
+```
   
-  
 
-Este ataque ressalta a importância de escolher primos p e q com diferença suficientemente grande. Recomenda-se que |p − q| > 2^(n/2 − 100) para chaves de n bits.
+Este ataque ressalta a importância de escolher primos $p$ e $q$ com diferença suficientemente grande. O método de Fermat é particularmente eficiente quando os fatores são próximos entre si, pois o valor $b = \frac{p - q}{2}$​ torna-se pequeno, reduzindo o número de iterações necessárias. Portanto, na prática, recomenda-se que $p$ e $q$ sejam escolhidos de forma aleatória e com magnitude semelhante, mas sem proximidade excessiva, evitando vulnerabilidades a esse tipo de ataque.
 
   
   
 
 ## **3.5.3 Ataque de Wiener (Expoente Privado Pequeno)**
 
-O ataque de Wiener (1990) explora situações em que d (chave privada) é pequeno — especificamente quando d < (1/3) · n^(1/4). Nesses casos, é possível recuperar d a partir de (e, n) utilizando aproximações por frações contínuas da razão e/n. Este é um ataque real e documentado contra implementações que tentam acelerar a decifragem usando um d pequeno.
+O ataque de Wiener (1990) explora situações em que o expoente privado $d$ é pequeno, especificamente quando:
 
-  
-  
+$$  
+d < \frac{1}{3} n^{1/4}  
+$$
 
-**Código Python – Ataque de Wiener via Frações Contínuas:**
+Nesses casos, é possível recuperar $d$ a partir da chave pública $(e, n)$ utilizando aproximações racionais obtidas por frações contínuas da razão:
 
+$$  
+\frac{e}{n}  
+$$
+
+O ataque baseia-se na relação:
+
+$$  
+ed \equiv 1 \pmod{\varphi(n)}  
+$$
+
+Essa relação implica que a fração $\frac{e}{n}$ pode ser bem aproximada por frações da forma:
+
+$$  
+\frac{k}{d}  
+$$
+
+Assim, ao expandir $\frac{e}{n}$ em fração contínua e analisar seus convergentes, é possível recuperar o valor de $d$.
+
+Trata-se de um ataque clássico e documentado, evidenciando que a escolha de um expoente privado pequeno, embora possa melhorar a eficiência da decifragem, compromete severamente a segurança do sistema RSA.
+
+---
+
+### **Código Python – Ataque de Wiener via Frações Contínuas**
+
+```python
 from math import isqrt
 
-  
-
 def fracao_continua(n, d):
+    """Gera os coeficientes da expansão em fração contínua de n/d."""
+    coefs = []
+    while d:
+        coefs.append(n // d)
+        n, d = d, n % d
+    return coefs
 
-"""Gera os coeficientes da expansão em fração contínua de n/d."""
-
-coefs = []
-
-while d:
-
-coefs.append(n // d)
-
-n, d = d, n % d
-
-return coefs
-
-  
 
 def convergentes(coefs):
+    """Calcula os convergentes da fração contínua."""
+    convs = []
 
-"""Calcula os convergentes da fração contínua."""
+    for i in range(len(coefs)):
+        if i == 0:
+            convs.append((coefs[0], 1))
+        elif i == 1:
+            p = coefs[1] * coefs[0] + 1
+            q = coefs[1]
+            convs.append((p, q))
+        else:
+            p_prev, q_prev = convs[i - 1]
+            p_pprev, q_pprev = convs[i - 2]
 
-convergentes = []
+            p = coefs[i] * p_prev + p_pprev
+            q = coefs[i] * q_prev + q_pprev
 
-for i in range(len(coefs)):
+            convs.append((p, q))
 
-if i == 0:
+    return convs
 
-convergentes.append((coefs[0], 1))
-
-elif i == 1:
-
-p = coefs[1] * coefs[0] + 1
-
-convergentes.append((p, coefs[1]))
-
-else:
-
-p_prev, q_prev = convergentes[i-1]
-
-p_pprev, q_pprev = convergentes[i-2]
-
-p = coefs[i] * p_prev + p_pprev
-
-q = coefs[i] * q_prev + q_pprev
-
-convergentes.append((p, q))
-
-return convergentes
-
-  
 
 def ataque_wiener(e, n):
+    """
+    Ataque de Wiener: recupera d quando d é pequeno.
+    """
 
-"""
+    coefs = fracao_continua(e, n)
+    convs = convergentes(coefs)
 
-Ataque de Wiener: recupera d quando d é pequeno.
+    for k, d in convs:
+        if k == 0:
+            continue
 
-Funciona se d < (1/3) * n^(1/4)
+        if (e * d - 1) % k != 0:
+            continue
 
-"""
+        phi = (e * d - 1) // k
 
-coefs = fracao_continua(e, n)
+        # Resolver x^2 - (n - phi + 1)x + n = 0
+        b = n - phi + 1
+        discriminante = b * b - 4 * n
 
-convs = convergentes(coefs)
+        if discriminante < 0:
+            continue
 
-for k, d in convs:
+        raiz = isqrt(discriminante)
 
-if k == 0:
+        if raiz * raiz == discriminante:
+            p = (b + raiz) // 2
+            q = (b - raiz) // 2
 
-continue
+            if p * q == n:
+                print("Ataque de Wiener bem-sucedido!")
+                print(f"d recuperado = {d}")
+                print(f"p = {p}, q = {q}")
+                return d
 
-if (e * d - 1) % k != 0:
+    print("Ataque de Wiener falhou.")
+    return None
+```
 
-continue
+---
 
-phi = (e * d - 1) // k
+### **Exemplo de uso (caso vulnerável)**
 
-# Tenta resolver p^2 - (n - phi + 1)*p + n = 0
-
-b = n - phi + 1
-
-discriminante = b * b - 4 * n
-
-if discriminante < 0:
-
-continue
-
-raiz = isqrt(discriminante)
-
-if raiz * raiz == discriminante:
-
-p = (b + raiz) // 2
-
-q = (b - raiz) // 2
-
-if p * q == n:
-
-print(f'Ataque de Wiener bem-sucedido!')
-
-print(f' d recuperado = {d}')
-
-print(f' p = {p}, q = {q}')
-
-return d
-
-print('Ataque de Wiener falhou (d provavelmente seguro).')
-
-return None
-
-  
-
-# Exemplo com d pequeno (vulnerável)
-
-p = 9539 # primo
-
-q = 9749 # primo
-
+```python
+# Parâmetros vulneráveis
+p = 9539
+q = 9749
 n = p * q
 
 phi_n = (p - 1) * (q - 1)
 
-d = 53 # d pequeno propositalmente (vulnerável!)
-
+d = 53  # propositalmente pequeno (vulnerável!)
 e = pow(d, -1, phi_n)
 
 print(f'RSA configurado: n={n}, e={e}, d={d}')
 
+# Ataque
 d_rec = ataque_wiener(e, n)
 
-  
-
 # Verificação
-
 M = 42
-
 C = pow(M, e, n)
 
 if d_rec:
+    M_dec = pow(C, d_rec, n)
+    print(f'Mensagem original: {M} | Decifrado: {M_dec}')
+```
 
-M_dec = pow(C, d_rec, n)
+---
 
-print(f'Mensagem original: {M} | Decifrado com d recuperado: {M_dec}')
+###  Observação de segurança
 
-  
-  
+O ataque de Wiener demonstra que nunca se deve escolher $d$ pequeno como forma de otimização. Na prática, garante-se que $d$ seja suficientemente grande para evitar esse tipo de ataque.
 
-O ataque de Wiener demonstra que nunca se deve escolher d pequeno como otimização. A defesa padrão é garantir que d > n^(1/2), o que inviabiliza o ataque das frações contínuas.
-
-  
-  
+---
 
 ## **3.5.4 Ataque de Håstad (Broadcast Attack – Expoente Público Pequeno)**
 
-O ataque de Håstad (1985) ocorre quando a mesma mensagem M é cifrada com o mesmo expoente público pequeno e (tipicamente e = 3) para e destinatários diferentes, usando módulos distintos n1, n2, n3. Como M^e é o mesmo para todos, e os módulos são coprimos, o Teorema Chinês do Resto (CRT) permite reconstruir M^e diretamente, e então calcular a raiz e-ésima inteira para obter M.
+O ataque de Håstad ocorre quando a mesma mensagem (M) é cifrada para múltiplos destinatários usando o mesmo expoente público pequeno (tipicamente ($e = 3$)).
 
-  
-  
+Se tivermos:
 
-**Código Python – Ataque de Håstad com CRT:**
+$$  
+C_i = M^e \mod n_i  
+$$
 
-from math import gcd
+e os módulos ($n_i$) forem coprimos entre si, então é possível reconstruir:
 
-from sympy import integer_nthroot # pip install sympy
+$$  
+M^e  
+$$
 
-  
+utilizando o Teorema Chinês do Resto. Em seguida, calcula-se a raiz $e$-ésima inteira para recuperar ($M$).
+
+---
+
+### **Código Python – Ataque de Håstad com CRT**
+
+```python
+from sympy import integer_nthroot
 
 def crt(residuos, modulos):
+    """Teorema Chinês do Resto"""
+    M = 1
+    for m in modulos:
+        M *= m
 
-"""Teorema Chinês do Resto: encontra x tal que x ≡ r_i (mod m_i)."""
+    x = 0
+    for r, m in zip(residuos, modulos):
+        Mi = M // m
+        inv = pow(Mi, -1, m)
+        x += r * Mi * inv
 
-M = 1
+    return x % M
 
-for m in modulos:
-
-M *= m
-
-x = 0
-
-for r, m in zip(residuos, modulos):
-
-Mi = M // m
-
-inv = pow(Mi, -1, m) # Inverso modular
-
-x += r * Mi * inv
-
-return x % M
-
-  
 
 def ataque_hastad(cifrados, modulos, e=3):
+    """Ataque de Håstad"""
+    M_e = crt(cifrados, modulos)
 
-"""
+    M, exato = integer_nthroot(M_e, e)
 
-Ataque de Håstad para e=3.
+    if exato:
+        print("Ataque de Håstad bem-sucedido!")
+        print(f"Mensagem recuperada: {M}")
+        return M
+    else:
+        print("Ataque falhou (possível uso de padding).")
+        return None
+```
 
-cifrados: lista de M^e mod n_i para cada destinatário
+---
 
-modulos: lista dos módulos n_i
+### **Exemplo de uso**
 
-"""
-
-# Recupera M^e via CRT
-
-M_e = crt(cifrados, modulos)
-
-# Calcula raiz e-ésima inteira
-
-M, exato = integer_nthroot(M_e, e)
-
-if exato:
-
-print(f'Ataque de Håstad bem-sucedido!')
-
-print(f'Mensagem recuperada: {M}')
-
-return M
-
-else:
-
-print('Ataque falhou: M^e não é cubo perfeito (padding pode estar ativo).')
-
-return None
-
-  
-
-# Simulação: mesma mensagem M cifrada para 3 destinatários com e=3
-
+```python
 e = 3
-
-M = 42 # Mensagem secreta
-
-  
-
-# Chaves públicas de 3 destinatários diferentes
+M = 42
 
 pares = [(61, 53), (67, 71), (79, 83)]
-
 ns = [p * q for p, q in pares]
-
-print(f'Módulos: {ns}')
-
-  
-
-# Cifragem da mesma mensagem para cada destinatário
 
 cifrados = [pow(M, e, n) for n in ns]
 
-print(f'Cifrados: {cifrados}')
+M_rec = ataque_hastad(cifrados, ns, e)
 
-  
+print(f'Mensagem original: {M}')
+print(f'Mensagem recuperada: {M_rec}')
+```
 
-# Ataque
+---
 
-M_recuperado = ataque_hastad(cifrados, ns, e)
+### Defesa
 
-print(f'Mensagem original: {M} == Recuperada: {M_recuperado}: {M == M_recuperado}')
+A defesa contra esse ataque é o uso de padding aleatório, como o **OAEP**, que impede que mensagens iguais resultem no mesmo valor cifrado.
 
-  
-  
-
-A defesa contra este ataque é o uso de padding aleatório antes da cifragem (OAEP). O padding garante que textos iguais produzam cifrados diferentes para cada destinatário, invalidando o uso do CRT.
-
-  
-  
+---
 
 ## **3.6 Pontos Fracos e Análise Crítica**
 
-A partir da análise dos algoritmos de ataque, identificam-se os principais pontos fracos do RSA quando mal implementado:
+A análise dos ataques permite identificar vulnerabilidades importantes do RSA quando mal implementado:
 
-- Primos próximos: suscetíveis ao método de Fermat. Solução: gerar p e q independentemente com diferença grande.
+- **Primos próximos** → vulneráveis ao método de Fermat
     
-- Expoente privado pequeno (d pequeno): vulnerável ao ataque de Wiener. Solução: garantir d > n^(1/2).
+- **Expoente privado pequeno** → vulnerável ao ataque de Wiener
     
-- Mesma mensagem sem padding para múltiplos destinatários: vulnerável ao ataque de Håstad. Solução: usar OAEP.
+- **Reutilização de mensagem sem padding** → vulnerável ao ataque de Håstad
     
-- Ataques de temporização (Timing Attack): inferem d medindo o tempo de decifragem. Solução: uso de operações em tempo constante (blinding).
+- **Ataques de temporização** → exploram variações de tempo na execução
     
-- Computação quântica: o algoritmo de Shor resolve a fatoração em tempo polinomial, comprometendo o RSA futuro. Solução: criptografia pós-quântica (NIST PQC).
+- **Computação quântica** → algoritmo de Shor compromete o RSA no futuro
     
 
-  
-  
+---
 
+###  Boas práticas
+
+- Escolher (p) e (q) com mesma magnitude, mas não próximos
+    
+- Garantir (d) suficientemente grande
+    
+- Utilizar padding seguro (OAEP)
+    
+- Implementar operações em tempo constante
+    
+- Considerar criptografia pós-quântica para longo prazo
 # **4. Conclusão**
 
 O RSA é um algoritmo de enorme importância histórica e prática para a criptografia moderna, servindo de base para protocolos como TLS/SSL, PGP e SSH. Sua segurança reside na dificuldade computacional da fatoração de inteiros grandes, sustentada por séculos de Teoria dos Números.
